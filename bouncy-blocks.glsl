@@ -27,12 +27,6 @@ vec3 rotatez(in vec3 p, float ang)
 	return vec3(p.x*cos(ang)-p.y*sin(ang), p.x*sin(ang)+p.y*cos(ang), p.z);
 }
 
-vec2 plane(in vec3 p, in vec3 n, float d, float obj)
-{
-	n = normalize(n);
-	return vec2(dot(p,n) + d, obj);
-}
-
 vec2 rbox(in vec3 p, in vec3 pos, in vec3 ang, float obj)
 {
 	vec3 b = vec3(0.3,0.3,0.3);
@@ -56,9 +50,7 @@ vec2 min2(vec2 o1, vec2 o2)
 }
 vec2 scene(in vec3 p)
 {
-	vec2    d = plane(p, vec3(0,1.0,0), 0.9, 1.0);
-	d = min2(d, plane(p, vec3(0,0.5,1), 1.0, 1.0));
-	d = min2(d, sph(p+vec3(0.0, 0.2+sin(time*2.0),+0.0), 0.5+0.2*sin(time), 4.0));
+	vec2 d = sph(p+vec3(0.0, 0.2+sin(time*2.0),+0.0), 0.5+0.2*sin(time), 4.0);
 	d = min2(d, rbox(p,vec3(+0.2+sin(time*2.0),+0.0,+0.0), vec3(0.5,-0.5,0.5), 3.0));
 	d = min2(d, rbox(p,vec3(+0.5+sin(time*1.5),-0.2,-0.2), vec3(-0.5,0.25,0.65), 2.0));
 	d = min2(d, rbox(p,vec3(+0.7,+0.3+sin(time*1.3),+0.5), vec3(-0.5,-0.65,1.5), 2.0));
@@ -131,16 +123,9 @@ vec3 rm2(in vec3 ro, in vec3 rd)
 }
 
 void main( void ) {
-//	vec2 p = 2.0 * (gl_FragCoord.xy / resolution.xy) - 1.0;
-//	p.x *= resolution.x / resolution.y;
-//	p /= max(resolution.x, resolution.y) / 30.0;
-
-	vec2 p = (gl_FragCoord.xy / max(resolution.x, resolution.y) - 0.5);
-//	p.x *= resolution.x / resolution.y;
-//	p *= time;
-	p *= 2.;
-
-	p.y += .7;
+	vec2 p = gl_FragCoord.xy / max(resolution.x, resolution.y) - 0.5;
+	p *= 2.0;
+	p.y += 0.7;
 
 	vec3 color = vec3(0.0);
 	vec3 contrib = vec3(0.0);

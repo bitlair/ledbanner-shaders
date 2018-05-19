@@ -1,7 +1,7 @@
 // http://www.pouet.net/prod.php?which=57245
 
 #define t iTime
-#define r iResolution.xy
+#define r vec2(max(iResolution.x, iResolution.y))
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 	vec3 c;
@@ -9,7 +9,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 	for(int i=0;i<3;i++) {
 		vec2 uv,p=fragCoord.xy/r;
 		uv=p;
-		p-=.5;
+		p-=vec2(.5, 0.05);
 		p.x*=r.x/r.y;
 		z+=.07;
 		l=length(p);
